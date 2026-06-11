@@ -1,29 +1,22 @@
-export interface RuntimeConfig {
-  vision: boolean;
+import env from "../config/env";
+import { runtimeConfig } from "../config/runtime";
 
-  audio: boolean;
+export interface KernelConfig {
+  env: typeof env;
 
-  groups: boolean;
-
-  dms: boolean;
-
-  toolCreation: boolean;
-
-  selfImprovement: boolean;
+  runtime: typeof runtimeConfig;
 }
 
-export const config: RuntimeConfig = {
-  vision: true,
+export const kernelConfig: KernelConfig = {
+  env,
 
-  audio: true,
-
-  groups: true,
-
-  dms: true,
-
-  toolCreation: false,
-
-  selfImprovement: false,
+  runtime: runtimeConfig,
 };
 
-export default config;
+export function getKernelConfig(): KernelConfig {
+  return kernelConfig;
+}
+
+export function syncRuntimeToKernel(): void {
+  kernelConfig.runtime = runtimeConfig;
+}

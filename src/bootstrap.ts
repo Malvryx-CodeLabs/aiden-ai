@@ -1,20 +1,37 @@
-import env from "./config/env";
 import logger from "./utils/logger";
+import { whatsappConnection } from "./whatsapp/connection";
+import { startEventListeners } from "./whatsapp/event-listeners";
+import { registerTools } from "./tools";
+import { runtimeConfig } from "./config/runtime";
 
-export async function bootstrap(): Promise<void> {
-  logger.info(
-    `${env.app.name} is bootstrapping...`
-  );
+export class Bootstrap {
+  async start(): Promise<void> {
+    try {
+      logger.info("Starting Aiden AI system...");
 
-  logger.info(
-    `Environment: ${env.app.env}`
-  );
+      logger.info(
+        `Active model: ${runtimeConfig.activeModel}`
+      );
 
-  logger.info(
-    `Default Provider: ${env.ai.defaultProvider}`
-  );
+      logger.info(
+        `Active provider: ${runtimeConfig.activeProvider}`
+      );
 
-  logger.info(
-    `Default Model: ${env.ai.defaultModel}`
-  );
+      // 1. REGISTER TOOLS
+      registerTools();
+
+      // 2. START WHATSAPP CONNECTION
+      await whatsappConnection.start();
+
+      // 3. START EVENT LISTENERS
+      startEventListeners();
+
+      logger.info("Aiden is now ONLINE 🚀");
+    } catch (err) {
+      logger.error("Bootstrap failed:", err);
+      process.exit(1);
+    }
+  }
 }
+
+export const bootstrap = new Bootstrap();
