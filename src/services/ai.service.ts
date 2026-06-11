@@ -1,7 +1,7 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 
 import { promptBuilder } from "../core/prompt-builder";
-import { runtimeConfig } from "../config/runtime";
+import { getRuntimeConfig } from "../config/runtime";
 
 import { groqProvider } from "../ai/providers/groq.provider";
 
@@ -11,6 +11,7 @@ export class AIService {
 
     const prompt = await promptBuilder.build(ctx);
 
+    const runtimeConfig = getRuntimeConfig();
     const provider = runtimeConfig.activeProvider;
     const model = runtimeConfig.activeModel;
 

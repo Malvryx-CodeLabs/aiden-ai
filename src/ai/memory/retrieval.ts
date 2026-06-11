@@ -10,12 +10,12 @@ export interface MemoryMatch {
 }
 
 export class MemoryRetrieval {
-  rankMemories(
+  async rankMemories(
     userId: string,
     query: string
-  ): MemoryMatch[] {
+  ): Promise<MemoryMatch[]> {
     const memories =
-      memoryEngine.search(userId, query);
+      await memoryEngine.search(userId, query);
 
     const scored: MemoryMatch[] = memories.map(
       (m) => {
@@ -67,12 +67,12 @@ export class MemoryRetrieval {
     return score;
   }
 
-  getTopMemories(
+  async getTopMemories(
     userId: string,
     query: string,
     limit: number = 5
   ) {
-    const ranked = this.rankMemories(
+    const ranked = await this.rankMemories(
       userId,
       query
     );

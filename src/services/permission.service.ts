@@ -34,6 +34,10 @@ export interface MessageContext {
   isAdmin: boolean;
 
   isMentioned: boolean;
+
+  isOwner?: boolean;
+
+  isDeveloper?: boolean;
 }
 
 export class PermissionService {
@@ -47,7 +51,7 @@ export class PermissionService {
 
       if (!ownerAllowed.allowed) return ownerAllowed;
 
-      return can(ctx, action);
+      return can(this.toPermissionContext(ctx, true, false), action);
     }
 
     // GROUP LOGIC
@@ -103,7 +107,24 @@ export class PermissionService {
     }
 
     // DEFAULT PERMISSION CHECK
-    return can(ctx, action);
+    return can(
+      this.toPermissionContext(ctx, false, false),
+      action
+    );
+  }
+
+  private toPermissionContext(
+    ctx: MessageContext,
+    isOwner: boolean,
+    isDeveloper: boolean
+  ) {
+    return {
+      role: ctx.role,
+      isGroup: ctx.isGroup,
+      isDM: ctx.isDM,
+      isOwner,
+      isDeveloper,
+    };
   }
 
   private checkOwner(action: Action): {

@@ -1,16 +1,16 @@
 import env from "../config/env";
-import { runtimeConfig } from "../config/runtime";
+import { getRuntimeConfig } from "../config/runtime";
 
 export interface KernelConfig {
   env: typeof env;
 
-  runtime: typeof runtimeConfig;
+  runtime: ReturnType<typeof getRuntimeConfig>;
 }
 
 export const kernelConfig: KernelConfig = {
   env,
 
-  runtime: runtimeConfig,
+  runtime: getRuntimeConfig(),
 };
 
 export function getKernelConfig(): KernelConfig {
@@ -18,5 +18,5 @@ export function getKernelConfig(): KernelConfig {
 }
 
 export function syncRuntimeToKernel(): void {
-  kernelConfig.runtime = runtimeConfig;
+  kernelConfig.runtime = getRuntimeConfig();
 }

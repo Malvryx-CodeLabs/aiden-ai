@@ -1,5 +1,5 @@
 import toolEngine from "../core/tool-engine";
-import { searchTool } from "./search/tool";
+import { searchTool, SearchInput } from "./search/tool";
 import logger from "../utils/logger";
 
 export function registerTools(): void {
@@ -8,8 +8,8 @@ export function registerTools(): void {
   // SEARCH TOOL
   toolEngine.registerTool(
     "search",
-    async (input) => {
-      return await searchTool(input);
+    async (input: any) => {
+      return await searchTool(input as SearchInput);
     }
   );
 

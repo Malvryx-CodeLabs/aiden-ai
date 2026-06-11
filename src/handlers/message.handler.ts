@@ -1,4 +1,4 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 
 import { messageRouter } from "../core/router";
 import { aiService } from "../services/ai.service";
@@ -67,6 +67,7 @@ export class MessageHandler {
       const final = await responseBuilder.build({
         text: ai.text,
         mode: isGroup ? "GROUP" : "DM",
+        senderId,
       });
 
       const jid = groupId || senderId;

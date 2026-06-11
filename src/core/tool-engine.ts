@@ -1,4 +1,4 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 import { toolRegistry } from "./tool-registry";
 
 export type ToolInput = {
@@ -6,6 +6,18 @@ export type ToolInput = {
 };
 
 export class ToolEngine {
+  registerTool(
+    name: string,
+    handler: (input: ToolInput) => Promise<any>
+  ): void {
+    toolRegistry.register({
+      name,
+      description: name,
+      handler,
+    });
+    logger.info(`Tool registered: ${name}`);
+  }
+
   async runTool(name: string, input: ToolInput) {
     const tool = toolRegistry.get(name);
 

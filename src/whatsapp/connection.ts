@@ -2,7 +2,6 @@ import makeWASocket, {
   useMultiFileAuthState,
   DisconnectReason,
   fetchLatestBaileysVersion,
-  makeInMemoryStore,
 } from "@whiskeysockets/baileys";
 
 import qrcode from "qrcode-terminal";
@@ -11,9 +10,15 @@ import logger from "../utils/logger";
 
 export class WhatsAppConnection {
   private sock: any;
-  private store = makeInMemoryStore({});
 
   private authFolder = "./sessions/auth";
+
+  private status: "open" | "closed" | "connecting" =
+    "connecting";
+
+  private listeners: {
+    [key: string]: ((arg?: any) => void)[];
+  } = {};
 
   async start() {
     const { state, saveCreds } =
@@ -31,8 +36,6 @@ export class WhatsAppConnection {
       browser: ["Aiden", "Chrome", "1.0.0"],
     });
 
-    this.store.bind(this.sock.ev);
-
     this.sock.ev.on("creds.update", saveCreds);
 
     this.sock.ev.on("connection.update", (update: any) => {
@@ -47,10 +50,12 @@ export class WhatsAppConnection {
       }
 
       if (connection === "open") {
+        this.status = "open";
         logger.info("WhatsApp connected successfully");
       }
 
       if (connection === "close") {
+        this.status = "closed";
         const statusCode =
           (lastDisconnect?.error as Boom)?.output
             ?.statusCode;
@@ -63,6 +68,8 @@ export class WhatsAppConnection {
           "Connection closed. Reconnecting:",
           shouldReconnect
         );
+
+        this.emit("close", statusCode);
 
         if (shouldReconnect) {
           this.start();
@@ -81,6 +88,30 @@ export class WhatsAppConnection {
 
   getSocket() {
     return this.sock;
+  }
+
+  getStatus() {
+    return this.status;
+  }
+
+  on(event: string, handler: (arg?: any) => void) {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event].push(handler);
+  }
+
+  private emit(event: string, arg?: any) {
+    if (this.listeners[event]) {
+      this.listeners[event].forEach((handler) =>
+        handler(arg)
+      );
+    }
+  }
+
+  async reconnect() {
+    logger.warn("Attempting to reconnect...");
+    await this.start();
   }
 }
 

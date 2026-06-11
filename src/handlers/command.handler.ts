@@ -1,5 +1,5 @@
 import logger from "../utils/logger";
-import { runtimeConfig, setRuntimeConfig } from "../config/runtime";
+import { getRuntimeConfig, setRuntimeConfig } from "../config/runtime";
 import { keyAdmin } from "../ai/providers/key-admin";
 import { ownerPolicy } from "../permissions/owner-policy";
 

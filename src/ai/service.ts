@@ -1,6 +1,6 @@
 import logger from "../utils/logger";
 import { contextBuilder } from "../core/context-builder";
-import { runtimeConfig } from "../config/runtime";
+import { getRuntimeConfig } from "../config/runtime";
 
 export interface AIResponse {
   text: string;
@@ -19,6 +19,7 @@ export class AIService {
     const context =
       await contextBuilder.build(input);
 
+    const runtimeConfig = getRuntimeConfig();
     const provider =
       runtimeConfig.activeProvider;
 

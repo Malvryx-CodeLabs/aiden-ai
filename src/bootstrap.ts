@@ -1,5 +1,5 @@
 import logger from "./utils/logger";
-import { connection } from "./whatsapp/connection";
+import connection from "./whatsapp/connection";
 import { supervisor } from "./kernel/supervisor";
 
 export async function bootstrap() {
@@ -7,7 +7,7 @@ export async function bootstrap() {
     logger.info("🚀 Booting Aiden AI...");
 
     // Connect WhatsApp
-    await connection.connect();
+    await connection.start();
 
     // Start supervisor (auto-recovery system)
     supervisor.start();

@@ -1,4 +1,4 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 import { groqProvider } from "../ai/providers/groq.provider";
 import toolEngine from "../core/tool-engine";
 

@@ -1,5 +1,5 @@
 import logger from "../utils/logger";
-import { runtimeConfig } from "../config/runtime";
+import { getRuntimeConfig } from "../config/runtime";
 
 export interface ContextInput {
   senderId: string;
@@ -49,6 +49,7 @@ export class ContextBuilder {
 
     const userPrompt = this.buildUserPrompt(input);
 
+    const runtimeConfig = getRuntimeConfig();
     return {
       systemPrompt,
       userPrompt,

@@ -31,7 +31,7 @@ export class MemoryStorage {
     userId: string,
     key?: string
   ) {
-    return memoryEngine.read(userId, key);
+    return memoryEngine.read(userId);
   }
 
   async searchUserMemory(
@@ -46,7 +46,7 @@ export class MemoryStorage {
     query: string
   ): Promise<string> {
     const memories =
-      memoryEngine.search(userId, query);
+      await memoryEngine.search(userId, query);
 
     if (!memories.length) {
       return "";

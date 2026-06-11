@@ -1,4 +1,4 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 
 export interface ToolDefinition {
   name: string;

@@ -1,5 +1,5 @@
 import logger from "../utils/logger";
-import { connection } from "../whatsapp/connection";
+import connection from "../whatsapp/connection";
 
 export class Supervisor {
   private isRunning = false;

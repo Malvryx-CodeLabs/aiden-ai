@@ -1,4 +1,4 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 
 export class ResponseSynthesizer {
   async build(goal: string, steps: any[]) {

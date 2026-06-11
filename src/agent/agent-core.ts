@@ -1,4 +1,4 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 import toolService from "../services/tool.service";
 import llmPlanner from "./llm-planner";
 import { responseSynthesizer } from "./response-synthesizer";

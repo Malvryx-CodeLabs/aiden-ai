@@ -1,4 +1,4 @@
-import logger from "../utils/utils";
+import logger from "../utils/logger";
 import planner from "./planner";
 import toolService from "../services/tool.service";
 
